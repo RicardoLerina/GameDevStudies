@@ -23,9 +23,12 @@ if (-not (Test-Path (Join-Path $LovePath 'love.exe'))) {
     throw "love.exe not found in '$LovePath'. Pass -LovePath with your LÖVE folder."
 }
 
-# start from a clean output folder
-if (Test-Path $distDir) {
-    Remove-Item -Recurse -Force $distDir
+# start from a clean output, removing only this game's files since dist is
+# shared with the other games' builds
+foreach ($old in $outDir, $loveFile, $zipFile) {
+    if (Test-Path $old) {
+        Remove-Item -Recurse -Force $old
+    }
 }
 New-Item -ItemType Directory -Force $outDir | Out-Null
 

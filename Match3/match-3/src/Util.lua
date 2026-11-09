@@ -1,0 +1,68 @@
+-- Helper functions shared across the game.
+
+-- Cuts the tile sprite sheet into quads. The sheet has 9 rows of 12 tiles;
+-- each row holds two colors of 6 varieties, so the result has 18 colors.
+-- Returns tiles[color][variety].
+function GenerateTileQuads(atlas)
+    local tiles = {}
+
+    local x = 0
+    local y = 0
+
+    local counter = 1
+
+    for row = 1, 9 do
+        -- Left half and right half of the row are two different colors.
+        for i = 1, 2 do
+            tiles[counter] = {}
+
+            for col = 1, 6 do
+                table.insert(tiles[counter], love.graphics.newQuad(
+                    x, y, 32, 32, atlas:getDimensions()
+                ))
+                x = x + 32
+            end
+
+            counter = counter + 1
+        end
+        y = y + 32
+        x = 0
+    end
+
+    return tiles
+end
+
+-- Debug helper: pretty-prints a table recursively, guarding against cycles.
+function print_r ( t )
+    local print_r_cache={}
+    local function sub_print_r(t,indent)
+        if (print_r_cache[tostring(t)]) then
+            print(indent.."*"..tostring(t))
+        else
+            print_r_cache[tostring(t)]=true
+            if (type(t)=="table") then
+                for pos,val in pairs(t) do
+                    if (type(val)=="table") then
+                        print(indent.."["..pos.."] => "..tostring(t).." {")
+                        sub_print_r(val,indent..string.rep(" ",string.len(pos)+8))
+                        print(indent..string.rep(" ",string.len(pos)+6).."}")
+                    elseif (type(val)=="string") then
+                        print(indent.."["..pos..'] => "'..val..'"')
+                    else
+                        print(indent.."["..pos.."] => "..tostring(val))
+                    end
+                end
+            else
+                print(indent..tostring(t))
+            end
+        end
+    end
+    if (type(t)=="table") then
+        print(tostring(t).." {")
+        sub_print_r(t,"  ")
+        print("}")
+    else
+        sub_print_r(t,"  ")
+    end
+    print()
+end

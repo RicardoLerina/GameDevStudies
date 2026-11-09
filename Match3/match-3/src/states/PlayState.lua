@@ -128,8 +128,8 @@ end
 -- grid position (x, y). x and y are one-based grid coordinates and are
 -- never the selected tile's own cell (that case is handled before).
 function PlayState:isValidMove(tile, x, y)
-    -- TODO(human)
-    return false
+    -- Only tiles sharing a row or a column can be swapped.
+    return tile.gridX == x or tile.gridY == y
 end
 
 -- Swaps two tiles on the board and animates them to their new spots.

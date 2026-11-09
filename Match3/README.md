@@ -10,6 +10,8 @@ Install LÖVE 11.x and run the game folder:
 love Match3/match-3
 ```
 
+To build a standalone Windows version (no LÖVE needed), run `build.ps1` from this folder. The output goes to `dist/`.
+
 ## How to play
 
 - Move the cursor over the 8×8 board and select a tile, then select a second tile in the same row or column to swap them.
